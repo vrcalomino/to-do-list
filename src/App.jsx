@@ -1,16 +1,9 @@
-/* eslint-disable react/prop-types */
 import { useState } from 'react'
 import { useId } from 'react'
 import "./App.css"
+import Task from "./components/Task.jsx"
 
-const Task = ({id, name, removeTask}) => {
-  
-  return (
-  <li className="task" id={id}>
-    <span className='task-name'>{name}</span>
-    <button className='task-remove' onClick={() => removeTask(id)}>-</button>
-  </li>)
-}
+
 
 
 function App() {
@@ -19,13 +12,16 @@ function App() {
   const [tasks, setTasks] = useState([])
   const id = useId()
 
-  
-
   const addTask = (event) => {
     event.preventDefault()
-    const newTask = { id: id + tasks.length, name: newTaskName };
-    setTasks([...tasks, newTask]);
-    setNewTaskName("")
+    if(newTaskName.length !== 0) {
+      const newTask = { id: id + tasks.length, name: newTaskName };
+      setTasks([...tasks, newTask]);
+      setNewTaskName("")
+    } else {
+      window.alert("Can't add an empty task")
+    }
+    
   };
 
   const removeTask = (id) => {
@@ -35,7 +31,7 @@ function App() {
   return (
     <>
       <div className='task-box'>
-        <h1>Tareas del dia {date}</h1>
+        <h1>Tasks for {date}</h1>
         <ul className='task-list'>
           {tasks.map(task => (
             <Task  id={task.id} key={task.id} name={task.name} removeTask={removeTask} />
